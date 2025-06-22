@@ -1,0 +1,62 @@
+{% extends "index.html" %}
+{% load static %} 
+
+{% block body %}
+<style>
+  .fixed-image {
+      height: 200px;  
+      object-fit: cover;  
+      width: 100%;  
+  }
+</style>
+
+<div class="container mb-4 mt-5">
+    <h1 class="text-center mt-4" style="text-decoration: underline;"><b>DESTINATIONS</b></h1>
+    <div class="row g-4 m-3" id="destinations-container">
+        <!-- Cards will be inserted here dynamically -->
+    </div>
+</div>
+
+<script>
+  const destinations = [
+      { id: 1, title: "GOA TRIP", image: "{% static 'Photos/Goa.jpg' %}", description: "Goa, India's beach paradise, is known for its stunning shores, water sports, nightlife, historic forts, and vibrant culture." },
+      { id: 2, title: "Ayodhya", image: "{% static 'Photos/ayodhya.jpg' %}", description: "Ayodhya, a historic city in Uttar Pradesh, India, is the revered birthplace of Lord Rama and a major pilgrimage site, home to the Ram Mandir and ancient temples." },
+      { id: 3, title: "Manali", image: "{% static 'Photos/manali.jpg' %}", description: "Manali is a scenic hill station in Himachal Pradesh, India, known for its snow-capped mountains, adventure sports, and vibrant culture. It's a popular destination for trekking, skiing, and honeymoon trips." },
+      { id: 4, title: "Rajasthan", image: "{% static 'Photos/Rajasthan.jpg' %}", description: "Rajasthan, the Land of Kings, is known for its majestic palaces, vibrant festivals, and vast golden deserts. It offers a rich cultural heritage, featuring historic forts, colorful bazaars, and traditional folk music." },
+      { id: 5, title: "Kerala", image: "{% static 'Photos/Kerala.jpg' %}", description: "Kerala, known as 'God’s Own Country,' is famous for its serene backwaters, lush greenery, and Ayurvedic wellness retreats. It offers a unique blend of beaches, hill stations, and rich cultural traditions." },
+      { id: 6, title: "Sikkim", image: "{% static 'Photos/Sikkism.jpg' %}", description: "Sikkim, a serene Himalayan state, is known for its breathtaking landscapes, Buddhist monasteries, and rich biodiversity. It offers snow-capped peaks, vibrant culture, and peaceful trekking trails." }
+  ];
+
+  function loadDestinations() {
+      const container = document.getElementById("destinations-container");
+      destinations.forEach(dest => {
+          const card = document.createElement("div");
+          card.className = "card m-3 p-0";
+          card.style.width = "19rem";
+          card.id = `place-${dest.id}`;
+          card.innerHTML = `
+              <img src="${dest.image}" class="card-img-top fixed-image" alt="${dest.title}">
+              <div class="card-body d-flex flex-column">
+                  <h5 class="card-title">${dest.title}</h5>
+                  <p class="card-text" id="desc-${dest.id}">${dest.description}</p>
+                  <a href="{% url 'detail'%}" class="btn btn-primary mt-auto view-details" data-id="${dest.id}">View Details</a>
+              </div>
+          `;
+          container.appendChild(card);
+      });
+
+      // Attach event listeners to all "View Details" buttons
+      document.querySelectorAll('.view-details').forEach(button => {
+          button.addEventListener('click', function(event) {
+              event.preventDefault(); // Prevent default anchor behavior
+              const placeId = this.getAttribute('data-id'); // Get the ID from data attribute
+              localStorage.setItem('selectedPlaceId', placeId); // Store in localStorage
+              window.location.href = "{% url 'detail'%}"; // Redirect to details page
+          });
+      });
+  }
+
+  document.addEventListener("DOMContentLoaded", loadDestinations);
+</script>
+
+{% endblock body %}

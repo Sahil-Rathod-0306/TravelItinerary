@@ -1,0 +1,134 @@
+
+{% extends "index.html" %}
+{% load static %}
+
+
+{% block title%} 
+login
+ {%endblock title%}
+
+
+{% block body %}
+
+    <style>
+        /* Background Video */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .video-container video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+       
+    
+        /* Centering Form */
+        body {
+            height: 100vh;
+            width:100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 60px; 
+        }
+
+        /* Blur Background on Form */
+        .form-container {
+            background: rgba(255, 255, 255, 0.2); /* Semi-transparent */
+            backdrop-filter: blur(10px); /* Blur effect */
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width:40vw;
+            height:60vh;
+        }
+
+        .form-container h3, 
+        .form-container label, 
+        padding:100;
+        .form-container p {
+            color: black;
+        }
+
+        .toggle-link {
+            cursor: pointer;
+            color: #ffcc00;
+        }
+        #form-title{
+            padding-bottom:30px;
+        }
+    </style>
+    <div class="video-container">
+        <video autoplay muted loop>
+            <source src="{% static 'videos/login_bg.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div class="form-container">
+        <h3 id="form-title" class="text-center">Login</h3>
+        <form id="auth-form" method="post">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+            </div>
+            <div id="email-container" class="mb-3" style="display: none;">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+            <div id="confirm-password-container" class="mb-3" style="display: none;">
+                <label for="confirm_password" class="form-label">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+            <p class="text-center mt-3">Don't have an account? <span class="toggle-link">Sign Up</span></p>
+        </form>
+    </div>
+    <script>
+        const formTitle = document.getElementById('form-title');
+        const authForm = document.getElementById('auth-form');
+        const toggleLink = document.querySelector('.toggle-link');
+        const emailContainer = document.getElementById('email-container');
+        const confirmPasswordContainer = document.getElementById('confirm-password-container');
+
+        let isLogin = true;
+
+        toggleLink.addEventListener('click', () => {
+            isLogin = !isLogin;
+            formTitle.textContent = isLogin ? 'Login' : 'Sign Up';
+            toggleLink.textContent = isLogin ? 'Sign Up' : 'Login';
+            emailContainer.style.display = isLogin ? 'none' : 'block';
+            confirmPasswordContainer.style.display = isLogin ? 'none' : 'block';
+            authForm.action = isLogin ? "{% url 'login' %}" : "{% url 'register' %}";
+        });
+
+        authForm.action = "{% url 'login' %}";  // Default action
+    </script>
+
+
+ 
+
+
+
+
+ {% endblock body %}

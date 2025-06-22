@@ -1,0 +1,228 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}Tour Details{% endblock title %}
+
+{% block body %}
+<style>
+    body { overflow-x: hidden; }
+    .row { margin: 0; }
+</style>
+
+<div class="container mt-5">
+    <h1 class="text-center" id="tour-title" style="text-decoration:underline"><b></b></h1>
+</div>
+
+<div class="container-fluid my-4 mx-5" id="tour-details">
+    <!-- Tour details will be inserted here dynamically -->
+</div>
+<div class="container-fluid text-center mt-4">
+    <div class="row">
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    Tour Inclusion
+                </div>
+                <div class="card-body text-left">
+                    <p>
+                        1. Overnight stays at quality hotels or lodges.<br>
+                        2. Breakfast, lunch, and dinner (as per itinerary).<br>
+                        3. Private transportation for the group.<br>
+                        4. Professional tour guides.<br>
+                        5. Access to attractions, parks, or museums.<br>
+                        6. Any applicable local taxes or fees.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    Tour Exclusion
+                </div>
+                <div class="card-body text-left">
+                    <p>
+                        1. Personal expenses (shopping, souvenirs, etc.).<br>
+                        2. Optional activities or excursions.<br>
+                        3. Meals outside the specified package.<br>
+                        4. Optional travel insurance upgrades.<br>
+                        5. Room/hotel upgrades.<br>
+                        6. Visa fees or entry requirements.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    Advanced Preparation
+                </div>
+                <div class="card-body text-left">
+                    <p>
+                        1. Ensure passport validity for at least 6 months.<br>
+                        2. Check vaccination or medication requirements.<br>
+                        3. Purchase comprehensive travel insurance.<br>
+                        4. Prepare for currency exchange or notify bank.<br>
+                        5. Pack according to weather and activity needs.<br>
+                        6. Keep local emergency numbers accessible.
+                    </p>
+                  </div>
+                </div>
+             </div>
+         </div>
+       </div>
+    </div>
+
+<section class="container my-5 text-center">
+    <h2>For Contact</h2>
+    <p>Email us at: <a href="mailto:support@travelitinerary.com">support@travelitinerary.com</a></p>
+    <p>Follow us on social media for the latest updates.</p>
+</section>
+
+<script>
+    const tours = [
+        {
+            id: 1,
+            title: "GOA TOUR",
+            image: "{% static 'Photos/Goa.jpg' %}",
+            duration: "5 days",
+            places: ["Devgarh", "Malvan Tarkarli", "Sawantwadi", "Goa"],
+            includes: ["Tour Manager", "Hotel", "Meal", "Transport"],
+            why_travel: [
+                "Tour guide support.",
+                "All meals included in tour price.",
+                "Various activities for enjoyment."
+            ]
+        },
+        {
+            id: 2,
+            title: "AYODHYA TOUR",
+            image: "{% static 'Photos/ayodhya.jpg' %}",
+            duration: "7 days",
+            places: ["Ram Janmabhoomi", "Hanuman Garhi", "Dashrath Mahal", "Sita Ki Rasoi", "Guptar Ghat"],
+            includes: ["Tour Manager", "Hotel", "Meal", "Transport"],
+            why_travel: [
+                "Tour guide support.",
+                "All meals included in tour price.",
+                "Various activities for enjoyment."
+            ]
+        },
+        
+        {
+          id: 3,
+        title: "MANALI TOUR",
+        image: "{% static 'Photos/manali.jpg' %}",
+        duration: "8 days",
+        places: ["Hadimba Temple", "Solang Valley", "Jogini Waterfalls", "Mall Road", "Tibetan Monasteries"],
+        includes: ["Tour Manager", "Hotel", "Meal", "Transport"],
+        why_travel: [
+            "Tour guide support.",
+            "All meals included in tour price.",
+            "Various activities for enjoyment."
+        ]
+        },
+        {
+        id: 4,
+        title: "RAJASTHAN TOUR",
+        image: "{% static 'Photos/Rajasthan.jpg' %}",
+        duration: "8 days",
+        places: ["Amber Fort", "Hawa Mahal", "Jantar Mantar", "Jal Mahal", "City Palace", "Nahargarh Fort"],
+        includes: ["Tour Manager", "Hotel", "Meal", "Transport"],
+        why_travel: [
+            "Tour guide support.",
+            "All meals included in tour price.",
+            "Various activities for enjoyment."
+        ]
+       },
+       {
+        id: 5,
+        title: "KERALA TOUR",
+        image: "{% static 'Photos/Kerala.jpg' %}",
+        duration: "4 days",
+        places: ["Eravikulam National Park", "Alleppey Beach", "Soochipara Waterfalls", "Edakkal Caves"],
+        includes: ["Tour Manager", "Hotel", "Meal", "Transport"],
+        why_travel: [
+            "Tour guide support.",
+            "All meals included in tour price.",
+            "Various activities for enjoyment."
+        ]
+       },
+       {
+        id: 6,
+        title: "SIKKIM TOUR",
+        image: "{% static 'Photos/Sikkism.jpg' %}",
+        duration: "5 days",
+        places: ["Tsomgo Lake", "Hanuman Tok", "Pemayangtse Monastery", "Temi Tea Garden"],
+        includes: ["Tour Manager", "Hotel", "Meal", "Transport"],
+        why_travel: [
+            "Tour guide support.",
+            "All meals included in tour price.",
+            "Various activities for enjoyment."
+        ]
+       }
+
+
+    ];
+
+    function renderTourDetails() {
+        const tourId = localStorage.getItem("selectedPlaceId");
+
+        if (!tourId) {
+            document.getElementById("tour-details").innerHTML = "<p class='text-center text-danger'>No tour selected. Please go back and choose a tour.</p>";
+            return;
+        }
+
+        const tour = tours.find(t => t.id == tourId);
+        if (!tour) {
+            document.getElementById("tour-details").innerHTML = "<p class='text-center text-danger'>Tour not found.</p>";
+            return;
+        }
+
+        document.getElementById("tour-title").innerText = tour.title;
+
+        const tourHTML = `
+            <div class="row mb-5">
+                <div class="col-md-5">
+                    <div class="card">
+                        <img src="${tour.image}" height="420" class="card-img-top" alt="${tour.title}">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2>${tour.title}</h2>
+                            <h6><b>Tour Duration:</b> ${tour.duration}</h6>
+                            <h6><b>Places To Cover:</b> ${tour.places.join(" --- ")}</h6>
+                            <h6><b>Tour Includes:</b></h6>
+                            <div class="row text-center mt-3">
+                                ${tour.includes.map(item => `
+                                    <div class="col-md-3">
+                                        <i class="bi bi-check-circle fs-3 text-success"></i>
+                                        <h6>${item}</h6>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <h6 class="mt-3"><b>Why Travel With Us:</b></h6>
+                            <p>${tour.why_travel.join("<br>")}</p>
+                             <div class="text-center mt-4">
+                        <a href="{%url 'planTrip'%}" class="btn btn-success btn-lg" style="margin-top: -15px;">Plan Trip</a>
+                    </div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.getElementById("tour-details").innerHTML = tourHTML;
+    }
+
+    document.addEventListener("DOMContentLoaded", renderTourDetails);
+</script>
+
+{% endblock body%}
